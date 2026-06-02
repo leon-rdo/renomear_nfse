@@ -209,6 +209,7 @@ exemplos:
   %(prog)s --xml-dir ./XML --pdf-dir ./PDF
   %(prog)s --xml-dir ~/Downloads/NFs/XML --pdf-dir ~/Downloads/NFs/PDF --canceladas 25,32
   %(prog)s --xml-dir ./XML --dry-run
+  %(prog)s --xml-dir ./XML --pdf-dir ./PDF --check          # só verifica correspondências
         """,
     )
     parser.add_argument(
@@ -233,6 +234,11 @@ exemplos:
         "--dry-run", "-n",
         action="store_true",
         help="simula as renomeações sem alterar nenhum arquivo",
+    )
+    parser.add_argument(
+        "--check", "-c",
+        action="store_true",
+        help="apenas verifica correspondências entre XMLs e PDFs, sem renomear",
     )
     return parser.parse_args()
 
@@ -284,6 +290,15 @@ if __name__ == "__main__":
             print(f"Aviso: pasta de PDFs não encontrada em {padrao_pdf}")
             print("Os PDFs serão ignorados. Use --pdf-dir para especificar o caminho correto.\n")
             pdf_dir = padrao_pdf
+
+    if args.check:
+        print(f"{'─'*60}")
+        print(f"  Verificação de correspondências")
+        print(f"{'─'*60}")
+        print(f"  XML : {xml_dir}")
+        print(f"  PDF : {pdf_dir}\n")
+        verificar_correspondencias(xml_dir, pdf_dir)
+        sys.exit(0)
 
     canceladas: set = set()
     if args.canceladas.strip():

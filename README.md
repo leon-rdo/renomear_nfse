@@ -56,6 +56,7 @@ python3 renomear_nfse.py --xml-dir <pasta_dos_xmls> [opções]
 | `--pdf-dir DIR` | Não | Pasta com os arquivos `.pdf`. Se omitido, é solicitado interativamente (ou usa a pasta irmã `PDF/`) |
 | `--canceladas N,N,...` | Não | Números das notas canceladas, separados por vírgula |
 | `--dry-run` / `-n` | Não | Simula as renomeações sem alterar nenhum arquivo |
+| `--check` / `-c` | Não | Apenas verifica correspondências entre XMLs e PDFs, sem renomear |
 
 ### Exemplos
 
@@ -71,6 +72,9 @@ python3 renomear_nfse.py --xml-dir ~/Downloads/NFs/XML --pdf-dir ~/Downloads/NFs
 
 # Marcar notas 25 e 32 como canceladas
 python3 renomear_nfse.py --xml-dir ./XML --pdf-dir ./PDF --canceladas 25,32
+
+# Apenas verificar correspondências sem renomear nada
+python3 renomear_nfse.py --xml-dir ./XML --pdf-dir ./PDF --check
 ```
 
 ### Fluxo recomendado
