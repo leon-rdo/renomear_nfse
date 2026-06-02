@@ -97,6 +97,29 @@ def parse_xml(caminho: Path) -> dict:
     return {"nf_num": nf_num, "data": data, "tomador": tomador, "valor": valor}
 
 
+def verificar_correspondencias(xml_dir: Path, pdf_dir: Path) -> None:
+    """Exibe XMLs sem PDF correspondente e PDFs sem XML correspondente."""
+    xml_stems = {f.stem for f in xml_dir.glob("*.xml")}
+    pdf_stems = {f.stem for f in pdf_dir.glob("*.pdf")} if pdf_dir.is_dir() else set()
+
+    sem_pdf = sorted(xml_stems - pdf_stems)
+    sem_xml = sorted(pdf_stems - xml_stems)
+
+    if not sem_pdf and not sem_xml:
+        print("Correspondências : todas as notas têm XML e PDF.\n")
+        return
+
+    if sem_pdf:
+        print(f"XMLs sem PDF ({len(sem_pdf)}):")
+        for stem in sem_pdf:
+            print(f"  {stem}.xml")
+    if sem_xml:
+        print(f"PDFs sem XML ({len(sem_xml)}):")
+        for stem in sem_xml:
+            print(f"  {stem}.pdf")
+    print()
+
+
 def renomear(xml_dir: Path, pdf_dir: Path, canceladas: set, dry_run: bool = False) -> None:
     modo = "SIMULAÇÃO — nenhum arquivo será alterado" if dry_run else "EXECUÇÃO"
     print(f"{'─'*60}")
@@ -107,6 +130,8 @@ def renomear(xml_dir: Path, pdf_dir: Path, canceladas: set, dry_run: bool = Fals
     if canceladas:
         print(f"  Canceladas : NF {', '.join(str(n) for n in sorted(canceladas))}")
     print()
+
+    verificar_correspondencias(xml_dir, pdf_dir)
 
     xml_files = sorted(xml_dir.glob("*.xml"))
 
@@ -151,7 +176,7 @@ def renomear(xml_dir: Path, pdf_dir: Path, canceladas: set, dry_run: bool = Fals
                     if not dry_run:
                         pdf_path.rename(destino_pdf)
             else:
-                print(f"  PDF  não encontrado — verifique se está em: {pdf_dir}")
+                print(f"  PDF  não encontrado.")
 
             print()
             ok += 1

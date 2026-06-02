@@ -86,6 +86,27 @@ python3 renomear_nfse.py --dry-run
 python3 renomear_nfse.py
 ```
 
+## Verificação de correspondências
+
+Antes de qualquer renomeação, o script compara automaticamente as duas pastas e informa quais arquivos não têm par:
+
+```
+XMLs sem PDF (2):
+  150140222...591.xml
+  230140222...592.xml
+
+PDFs sem XML (1):
+  999999999...001.pdf
+```
+
+Se todas as notas estiverem pareadas:
+
+```
+Correspondências : todas as notas têm XML e PDF.
+```
+
+A comparação é feita pelo nome base do arquivo (sem extensão), que é o padrão do portal nfse.gov.br para parear XML e PDF.
+
 ## Formato de saída
 
 O nome gerado segue o padrão:
